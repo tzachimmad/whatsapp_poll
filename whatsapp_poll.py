@@ -1,6 +1,6 @@
 from __future__ import print_function
 import httplib2
-from whatsapp_parser import create_csv_file, printer
+from whatsapp_parser import create_csv_file
 import os
 
 from apiclient import errors
@@ -74,7 +74,7 @@ def csv_to_drive():
 def main():
     create_csv_file()
     csv_to_drive()
-    printer("Link to file:"+FILE_LINK)
+    print("Link to file:"+FILE_LINK)
 
 if __name__ == '__main__':
     main()

@@ -88,6 +88,3 @@ def create_csv_file():
     output_file.write(str(comma)+","+str(friends))
     output_file.close()
     print "Done creating local csv file output.csv "
-
-def printer(input):
-    print input

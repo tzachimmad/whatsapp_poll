@@ -74,7 +74,7 @@ def csv_to_drive():
 def main():
     create_csv_file()
     csv_to_drive()
-    print("Link to file:"+FILE_LINK)
+    print("Link to file: "+FILE_LINK)
 
 if __name__ == '__main__':
     main()

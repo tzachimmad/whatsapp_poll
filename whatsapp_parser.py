@@ -6,6 +6,13 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+def get_pos (hey, needles):
+    for needle in needles:
+        if needle in hey:
+            return hey.find(needle)
+    return hey.__len__()
+
+
 def comming (output_file, msg):
     come = 1
     friend = 0
@@ -14,28 +21,28 @@ def comming (output_file, msg):
     for post in msg:
         if (post == msg[0]) or ("Air" in post):
             continue
+        position = str(post).__len__()
         if "חבר" in post:
-            if "בא" in post:
+            if ("בא" in post) or ("מגיע" in post) or ("מביא" in post):
                 friend = 1
-            if "מגיע" in post:
-                friend = 1
-            if "מביא" in post:
-                friend = 1
-            if ("לא" or "מישהו" or "מי" or "?") in post:
-                friend = 0
-        if ("אבוא" or "אגיע") in post:
-            if "לא" not in post:
+                position = get_pos (post, {"בא","מגיע","מביא"})
+                if ("לא" in post[:position]) or ( "מישהו" in post[:position]) or ("מי" in post[:position]) or ("?" in post[:position]):
+                    friend = 0
+        if ("אבוא" in post) or ("אגיע" in post):
+            position = get_pos (post, {"אבוא","אגיע"})
+            if "לא" not in post[:position]:
                 come = 1
             else:
                 come = 0
-        if ("בא" or "יגיע" or "יבוא") in post:
-            if "אני" in post:
+        if ("בא" in post) or ("יגיע" in post) or ("יבוא" in post):
+            position = get_pos (post, {"בא","יגיע","יבוא"})
+            if "אני" in post[:position]:
                 come = 1
-                if "לא" in post:
+                if "לא" in post[:position]:
                     come = 0
             else:
                 friend = 1
-                if ("לא" or "מי" or "מישהו" or "?") in post:
+                if ("לא" in post[:position]) or ("מי" in post[:position]) or ("מישהו" in post[:position]) or ("?" in post[:position]) :
                     friend = 0
     output_file.write(str(come))
     output_file.write(",")

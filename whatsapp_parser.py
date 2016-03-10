@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import defaultdict
+import datetime
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -54,6 +55,14 @@ def print_to_csv(output_file,key,value):
     return coming,friend
 
 def print_header(output_file):
+    today = datetime.date.today()
+    time = datetime.datetime.now().time()
+    minutes = datetime.time.min
+    output_file.write("Updated,")
+    output_file.write(str(today))
+    output_file.write(",")
+    output_file.write(str(time))
+    output_file.write("\n\n")
     output_file.write("מגיע")
     output_file.write(",")
     output_file.write("מביא חבר")

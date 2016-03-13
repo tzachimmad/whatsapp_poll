@@ -26,7 +26,7 @@ def comming (output_file, msg):
             if ("בא" in post) or ("מגיע" in post) or ("מביא" in post):
                 friend = 1
                 position = get_pos (post, {"בא","מגיע","מביא"})
-                if ("לא" in post[:position]) or ( "מישהו" in post[:position]) or ("מי" in post[:position]) or ("?" in post[:position]):
+                if ("לא" in post[:position]) or ( "מישהו" in post[:position]) or ("מי" in post[:position]):
                     friend = 0
         if ("אבוא" in post) or ("אגיע" in post):
             position = get_pos (post, {"אבוא","אגיע"})
@@ -42,7 +42,7 @@ def comming (output_file, msg):
                     come = 0
             else:
                 friend = 1
-                if ("לא" in post[:position]) or ("מי" in post[:position]) or ("מישהו" in post[:position]) or ("?" in post[:position]) :
+                if ("לא" in post[:position]) or ("מי" in post[:position]) or ("מישהו" in post[:position]):
                     friend = 0
     output_file.write(str(come))
     output_file.write(",")

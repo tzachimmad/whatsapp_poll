@@ -34,8 +34,8 @@ def comming (output_file, msg):
                 come = 1
             else:
                 come = 0
-        if ("בא" in post) or ("יגיע" in post) or ("יבוא" in post):
-            position = get_pos (post, {"בא","יגיע","יבוא"})
+        if ("בא" in post) or ("יגיע" in post) or ("יבוא" in post) or ("מגיע" in post):
+            position = get_pos (post, {"בא","יגיע","יבוא","מגיע"})
             if "אני" in post[:position]:
                 come = 1
                 if "לא" in post[:position]:

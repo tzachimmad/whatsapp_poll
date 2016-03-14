@@ -41,7 +41,7 @@ def comming (output_file, msg):
                 if "לא" in post[:position]:
                     come = 0
             else:
-            	if  ("מי" not in post[:position]) or ("מישהו" not in post[:position])
+            	if ("מי" not in post[:position]) and ("מישהו" not in post[:position]):
                 	friend = 1
                 if "לא" in post[:position]:
                     friend = 0

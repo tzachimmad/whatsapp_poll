@@ -5,6 +5,6 @@ and relative google drive account. Missing from the repo is the client_secret.js
 
 More information on google client api and setup could be found here: https://developers.google.com/drive/v3/web/quickstart/python
 
-Notice that the Im using version 2 of Google's api while latest version is version 3
-Another important issue is that this app is targeted towards conversations in hebrew
+Notice that Im using version 2 of Google's api while latest version is version 3.
+Another important issue is that this app is targeted towards conversations in hebrew.
 

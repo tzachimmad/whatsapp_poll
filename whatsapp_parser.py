@@ -41,8 +41,9 @@ def comming (output_file, msg):
                 if "לא" in post[:position]:
                     come = 0
             else:
-                friend = 1
-                if ("לא" in post[:position]) or ("מי" in post[:position]) or ("מישהו" in post[:position]):
+            	if  ("מי" not in post[:position]) or ("מישהו" not in post[:position])
+                	friend = 1
+                if "לא" in post[:position]:
                     friend = 0
     output_file.write(str(come))
     output_file.write(",")

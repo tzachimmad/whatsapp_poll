@@ -6,51 +6,93 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+friend_only = {"יבוא", "יגיע"}
+first_msg_friend_associated = {"מביא"}
+me_only = {"אבוא", "אגיע", "אהיה"}
+agnostic = {"בא", "מגיע"}
+no_words = {"לא"," מי ", "מישהו"}
+separators = {",", "."}
+first_msg_words = {"אבוא", "אגיע", "אהיה", "בא", "מגיע"}
+
 def get_pos (hey, needles):
     for needle in needles:
         if needle in hey:
             return hey.find(needle)
-    return hey.__len__()
+    return -1
 
+def friend_analysis (msg):
+    friend_pos = msg.find("חבר")
+    if friend_pos>-1:
+        bring_pos = msg[:friend_pos].find("מביא")
+        if (bring_pos>-1):
+            no_pos= get_pos(msg[:bring_pos],no_words)
+            if no_pos == -1:
+                return [1,0]
+    return analyze_post(msg, friend_only)
+
+def analyze_post (msg,needles):
+    for needle in needles:
+        come_pos = msg.find(needle)
+        if come_pos == -1:
+            continue
+        no_pos = get_pos(msg[:come_pos],no_words)
+        if no_pos == -1:
+            if ("אני") in msg[:come_pos]:
+                return [1,0]
+            else:
+                return [1,1]
+        dot_pos = get_pos(msg[:come_pos],separators)
+        if dot_pos > no_pos:
+            if ("אני") in msg[:come_pos]:
+                return [1,0]
+            else:
+                return [1,1]
+        else:
+            if ("אני") in msg[:come_pos]:
+                return [-1,0]
+            else:
+                return [-1,1]
+    return [0,0]
 
 def comming (output_file, msg):
-    come = 1
+    tmpA = 0
+    tmpB = 0
+    come = 0
     friend = 0
-    if "לא" in msg[0]:
-        come = 0
+    come, tmpB = analyze_post(msg[0], first_msg_words)
+    friend, tmpB = friend_analysis(msg[0])
     for post in msg:
         if (post == msg[0]) or ("Air" in post):
             continue
-        position = str(post).__len__()
-        if "חבר" in post:
-            if ("בא" in post) or ("מגיע" in post) or ("מביא" in post):
-                friend = 1
-                position = get_pos (post, {"בא","מגיע","מביא"})
-                if ("לא" in post[:position]) or ( "מישהו" in post[:position]) or ("מי" in post[:position]):
-                    friend = 0
-        if ("אבוא" in post) or ("אגיע" in post):
-            position = get_pos (post, {"אבוא","אגיע"})
-            if "לא" not in post[:position]:
-                come = 1
-            else:
+        tmpA , tmpB = analyze_post(post,agnostic)
+        if tmpA == 1 and tmpB == 0:
+            come =1
+        if tmpA == 1 and tmpB == 1:
+            friend = 1
+        if tmpA == -1:
+            if tmpB == 0:
                 come = 0
-        if ("בא" in post) or ("יגיע" in post) or ("יבוא" in post) or ("מגיע" in post):
-            position = get_pos (post, {"בא","יגיע","יבוא","מגיע"})
-            if "אני" in post[:position]:
-                come = 1
-                if "לא" in post[:position]:
-                    come = 0
             else:
-            	if ("מי" not in post[:position]) and ("מישהו" not in post[:position]):
-                	friend = 1
-                if "לא" in post[:position]:
-                    friend = 0
+                friend = 0
+        tmpA , tmpB = analyze_post(post,me_only)
+        if tmpA:
+            come =1
+        if tmpA == -1:
+            come = 0
+        tmpA , tmpB = friend_analysis(post)
+        if tmpA:
+            friend = 1
+        if tmpA == -1:
+            friend = 0
+    if come == -1:
+        come = 0
+    if friend == -1:
+        friend = 0
     output_file.write(str(come))
     output_file.write(",")
     output_file.write(str(friend))
     output_file.write(",")
     return come,friend
-
 
 def print_to_csv(output_file,key,value):
     coming,friend = comming(output_file,value)

@@ -6,24 +6,51 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-friend_only = {"יבוא", "יגיע"}
-first_msg_friend_associated = {"מביא"}
-me_only = {"אבוא", "אגיע", "אהיה"}
-agnostic = {"בא", "מגיע"}
-no_words = {"לא"," מי ", "מישהו"}
-separators = {",", "."}
-first_msg_words = {"אבוא", "אגיע", "אהיה", "בא", "מגיע"}
+friend_only = ["יבוא", "יגיע"]
+first_msg_friend_associated = ["מביא"]
+me_only = ["אבוא", "אגיע", "אהיה"]
+agnostic = ["בא", "מגיע"]
+no_words = ["לא","מי", "מישהו"]
+separators = [",", "."]
+first_msg_words = ["אבוא", "אגיע", "אהיה", "בא", "מגיע"]
+friends_words = ["חבר"]
+bringing_friend = ["מביא"]
+delimiters = [",", ".","?","-","/"]
+
+def isBlank (msg, index):
+    this_char = msg[index]
+    if ord(this_char)==32:
+        return True
+    if ord(this_char)==160:
+        return True
+    for delimiter in delimiters:
+        if this_char==delimiter:
+            return True
+    return False
 
 def get_pos (hey, needles):
-    for needle in needles:
+    for input_needle in needles:
+        needle = input_needle.decode("utf-8")
         if needle in hey:
-            return hey.find(needle)
+            pos = hey.find(needle)
+            needle_sz = len(needle)
+            hey_sz = len(hey)
+            if needle_sz == hey_sz:
+                return pos
+            elif pos == 0:
+                if isBlank(hey,needle_sz):
+                    return pos
+            elif (pos + needle_sz) == hey_sz:
+                if isBlank(hey,pos-1):
+                    return pos
+            elif isBlank(hey,pos-1) and isBlank(hey,pos + needle_sz):
+                return pos
     return -1
 
 def friend_analysis (msg):
-    friend_pos = msg.find("חבר")
+    friend_pos = get_pos(msg,friends_words)
     if friend_pos>-1:
-        bring_pos = msg[:friend_pos].find("מביא")
+        bring_pos = get_pos(msg[:friend_pos],bringing_friend)
         if (bring_pos>-1):
             no_pos= get_pos(msg[:bring_pos],no_words)
             if no_pos == -1:
@@ -32,7 +59,9 @@ def friend_analysis (msg):
 
 def analyze_post (msg,needles):
     for needle in needles:
-        come_pos = msg.find(needle)
+        stam_array = ["סתם"]
+        stam_array[0]= needle
+        come_pos = get_pos(msg, stam_array)
         if come_pos == -1:
             continue
         no_pos = get_pos(msg[:come_pos],no_words)
@@ -59,9 +88,11 @@ def comming (output_file, msg):
     tmpB = 0
     come = 0
     friend = 0
-    come, tmpB = analyze_post(msg[0], first_msg_words)
-    friend, tmpB = friend_analysis(msg[0])
-    for post in msg:
+    first_msg  = msg[0].decode("utf-8")
+    come, tmpB = analyze_post(first_msg, first_msg_words)
+    friend, tmpB = friend_analysis(first_msg)
+    for input_post in msg:
+        post = input_post.decode("utf-8")
         if (post == msg[0]) or ("Air" in post):
             continue
         tmpA , tmpB = analyze_post(post,agnostic)

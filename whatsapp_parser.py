@@ -57,6 +57,10 @@ def friend_analysis (msg):
                 return [1,0]
     return analyze_post(msg, friend_only)
 
+#Return var1,var2
+## var1==1 means comming, var2==1 means friend comming else post owner comming
+## if var1==-1 means comming, var2==1 means friend not comming else post owner not comming
+
 def analyze_post (msg,needles):
     for needle in needles:
         stam_array = ["סתם"]

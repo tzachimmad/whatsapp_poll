@@ -6,10 +6,13 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+
+## each word is a tuple, if 1 is in front of it, than this word is distinct and cannot be found when 
+##incorparated in other word, otherwise this word can be found even when part of other word
 friend_only = [(0,"יבוא"), (0,"יגיע")]
 me_only = [(0,"אבוא"), (0,"אגיע"), (0,"אהיה")]
 agnostic = [(1,"בא"), (0,"מגיע"),(0,"להגיע"),]
-no_words = [(1,"לא"),(1,"מי"), (0,"מישהו")]
+no_words = [(1,"לא"),(1,"מי"),(0,"בספק"),(0,"מישהו"),(1,"שלא")]
 separators = [(0,","), (0,".")]
 first_msg_words = [(0,"אבוא"), (0,"אגיע"), (0,"אהיה"), (1,"בא"), (0,"מגיע"),(1,"באא")]
 friends_words = [(0,"חבר")]

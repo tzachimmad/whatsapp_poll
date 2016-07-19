@@ -109,7 +109,6 @@ def comming (output_file, msg):
     come = 0
     friend = 0
     first_msg  = msg[0].decode("utf-8")
-    come = analyze_post(first_msg, first_msg_words,come,1)
     come = analyze_post(first_msg, first_msg_words,come,0)
     friend = friend_analysis(first_msg, friend)
     for input_post in msg:

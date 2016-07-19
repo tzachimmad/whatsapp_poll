@@ -117,7 +117,7 @@ def comming (output_file, msg):
             continue
         come =  analyze_post(post,agnostic,come,1)
         friend = analyze_post(post,agnostic,friend,0)
-        come = analyze_post(post,me_only,come,1)
+        come = analyze_post(post,me_only,come,0)
         friend = friend_analysis(post,friend)
     output_file.write(str(come))
     output_file.write(",")

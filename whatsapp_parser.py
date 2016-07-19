@@ -11,10 +11,8 @@ sys.setdefaultencoding('utf-8')
 ##incorparated in other word, otherwise this word can be found even when part of other word
 friend_only = [(0,"יבוא"), (0,"יגיע"),(0,"ברק ורע"),(0,"באים")]
 me_only = [(0,"אבוא"), (0,"אגיע"), (0,"אהיה"),(0,"אבו מחר")]
-agnostic = [(1,"בא"), (0,"מגיע"),(0,"להגיע"),]
+agnostic = [(1,"בא"), (0,"מגיע"),(0,"להגיע"),(1,"באא")]
 no_words = [(1,"לא"),(1,"מי"),(0,"בספק"),(0,"מישהו"),(1,"שלא")]
-separators = [(0,","), (0,".")]
-first_msg_words = [(0,"אבוא"), (0,"אגיע"), (0,"אהיה"), (1,"בא"), (0,"מגיע"),(1,"באא"),(0,"אבו מחר")]
 friends_words = [(0,"חבר")]
 bringing_friend = [(0,"מביא"),(0,"פלוס")]
 delimiters = [(0,","), (0,"."),(0,"?"),(0,"-"),(0,"/")]
@@ -92,7 +90,7 @@ def analyze_post (msg,needles,prev,me):
                 return 1
             elif me==0:
                 return 1
-        dot_pos = get_pos(msg[:come_pos],separators)
+        dot_pos = get_pos(msg[:come_pos],delimiters)
         if dot_pos > no_pos:
             if get_pos(msg[:come_pos],me_word)>=0 and me==1:
                 return 1
@@ -109,7 +107,7 @@ def comming (output_file, msg):
     come = 0
     friend = 0
     first_msg  = msg[0].decode("utf-8")
-    come = analyze_post(first_msg, first_msg_words,come,0)
+    come = analyze_post(first_msg,agnostic + me_only,come,0)
     friend = friend_analysis(first_msg, friend)
     for input_post in msg:
         post = input_post.decode("utf-8")

@@ -10,9 +10,9 @@ sys.setdefaultencoding('utf-8')
 ## each word is a tuple, if 1 is in front of it, than this word is distinct and cannot be found when 
 ##incorparated in other word, otherwise this word can be found even when part of other word
 friend_only = [(0,"יבוא"), (0,"יגיע"),(0,"ברק ורע"),(0,"באים")]
-me_only = [(0,"אבוא"), (0,"אגיע"), (0,"אהיה"),(0,"אבו מחר")]
+me_only = [(0,"אבוא"), (0,"אגיע"), (0,"אהיה"),(0,"אבו מחר"),(0,"אצליח להגיע")]
 agnostic = [(1,"בא"), (0,"מגיע"),(0,"להגיע"),(1,"באא")]
-no_words = [(1,"לא"),(1,"מי"),(0,"בספק"),(0,"מישהו"),(1,"שלא")]
+no_words = [(1,"לא"),(1,"מי"),(0,"בספק"),(0,"מישהו"),(1,"שלא"),(0,"ביטל"),(0,"מבטל")]
 friends_words = [(0,"חבר")]
 bringing_friend = [(0,"מביא"),(0,"פלוס")]
 delimiters = [(0,","), (0,"."),(0,"?"),(0,"-"),(0,"/")]
@@ -163,9 +163,9 @@ def fill_dico(dico):
             msg = line
         dico[key].append(msg)
 
-def create_csv_file():
-    dico = defaultdict(list)
-    fill_dico(dico)
+def create_csv_file(dico):
+    ##dico = defaultdict(list)
+    ##fill_dico(dico)
     output_file = open("output.csv", 'w')
     print_header(output_file)
     comma = friends = 0

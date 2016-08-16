@@ -70,11 +70,11 @@ def csv_to_drive():
     service.files().update(fileId=FILE_ID,body = {'title':[TITLE],'mime_type':MIME_TYPE},
         newRevision=1,
         media_body='output.csv').execute()
+    print("Link to file: "+FILE_LINK)
 
 def main():
     create_csv_file()
     csv_to_drive()
-    print("Link to file: "+FILE_LINK)
 
 if __name__ == '__main__':
     main()

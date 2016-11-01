@@ -53,8 +53,6 @@ def parser():
         tmp_date =  elem[elem.find('['):elem.find('[')+30]
         tmp_date = tmp_date[tmp_date.find('/')+1:]
         date = tmp_date[:tmp_date.find('/')]
-        print date
-        print tmp_date
         if (date!=today and date!=yesterday):
             continue
 

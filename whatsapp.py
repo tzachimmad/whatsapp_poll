@@ -13,7 +13,10 @@ from whatsapp_poll import csv_to_drive
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+FILE_LINK = 'https://docs.google.com/spreadsheets/d/1GU5e-RFYRsYL1-YYL3ooMHE2VOHnz09oE8LZrmQa4I0/edit?usp=sharing'
 admin = "צחי לפידות"
+group_to_parse = "כדורסל מטומי-שלישי 19:00"
 dico = {}
 
 def scorllUp():
@@ -22,10 +25,21 @@ def scorllUp():
     except:
         pass
 
+def sendMessage(message):
+    msgbox = driver.find_element_by_class_name("input-container")
+    msgbox.click()
+    msgbox.send_keys(message)
+    driver.find_element_by_class_name("icon-send").click()
+
 def parser():
     today = time.strftime("%d")
     yesterday_tmp = datetime.date.today() - datetime.timedelta(1)
     yesterday = yesterday_tmp.strftime('%d')
+    if (int(today)<10):
+        today = today[1]
+    if (int(yesterday)<10):
+        yesterday = yesterday[1]
+
     txt = driver.find_element_by_class_name("message-list").get_attribute("innerHTML")
     txt_find= "inverse-text-direction selectable-text"
     txt_other_find = "class=\"emojitext selectable-text\" dir="
@@ -33,12 +47,14 @@ def parser():
     has_author= "-text has-author\"><h3"
     prev_auth = authour = ""
     for elem in txt.split("bubble bubble"):
-
         ##define if relative msg
         if (elem.find("docs.google.com")>0):
             continue
-        tmp_date =  elem[elem.find('[')+10:elem.find('[')+14]
+        tmp_date =  elem[elem.find('['):elem.find('[')+30]
+        tmp_date = tmp_date[tmp_date.find('/')+1:]
         date = tmp_date[:tmp_date.find('/')]
+        print date
+        print tmp_date
         if (date!=today and date!=yesterday):
             continue
 
@@ -49,7 +65,7 @@ def parser():
         cur_msg = written_msg[aa:bb]
 
         ##set author
-        if (elem.find("0957")>0):
+        if (elem.find("-->+972 54-772-0957<")>0):
             authour = admin
         if (elem.find(has_author)>=0):
             tmp_authour = elem[elem.find(authour_txt):elem.find(authour_txt)+90]
@@ -62,7 +78,8 @@ def parser():
 
         ##put message in dico
         arr = dico.get(authour,[])
-        arr.append(cur_msg)
+        final_msg = cur_msg.replace("\n",". ")
+        arr.append(final_msg)
         dico[authour]=arr
 
 ###load whatsapp web
@@ -77,8 +94,8 @@ time.sleep(5)
 ###find group
 msgbox = driver.find_element_by_class_name("input-search")
 msgbox.click()
-str = "//*[@title='" + "כדורסל מטומי-שלישי 19:00" + "']"
-msgbox.send_keys("19:00")
+str = "//*[@title='" + group_to_parse + "']"
+##msgbox.send_keys("19:00")
 driver.find_element_by_xpath(str).click()
 time.sleep(1)
 scorllUp()
@@ -89,7 +106,18 @@ scorllUp()
 time.sleep(3)
 scorllUp()
 time.sleep(3)
+
+##parse group and finish
 parser()
 create_csv_file(dico)
 csv_to_drive()
+
+if sys.argv[1].find("publish")>=0:
+    sendMessage(FILE_LINK)
+    time.sleep(1)
 driver.quit()
+
+try:
+    remove("output.csv")
+except OSError:
+    pass

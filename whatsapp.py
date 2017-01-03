@@ -26,10 +26,10 @@ def scorllUp():
         pass
 
 def sendMessage(message):
-    msgbox = driver.find_element_by_class_name("input-container")
-    msgbox.click()
-    msgbox.send_keys(message)
-    driver.find_element_by_class_name("icon-send").click()
+    driver.find_element_by_css_selector("#main > footer > div.block-compose > button").click()
+    driver.find_element_by_css_selector("#main > footer > div.compose-box-items-positioning-container > div > div > div > span > div > div > div > span.emojik.emojiordered1754").click()
+    driver.find_element_by_class_name("input-container").send_keys(":"+message)
+    driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
 
 def parser():
     today = time.strftime("%d")
@@ -61,7 +61,8 @@ def parser():
         aa = written_msg.find("-->")+3
         bb= written_msg.find("<!-- /react-text -->")
         cur_msg = written_msg[aa:bb]
-
+        print written_msg[aa:bb]
+        print "--------------------------------------------------------------------------------"
         ##set author
         if (elem.find("-->+972 54-772-0957<")>0):
             authour = admin
@@ -83,7 +84,7 @@ def parser():
 ###load whatsapp web
 chrome_driver_path = '/home/redbend/Desktop/training/Hackathon/chromedriver'
 options = webdriver.ChromeOptions()
-options.add_argument("user-data-dir=/home/redbend/Desktop/training/python scripts/WhatsApp_poll/tmp") #Path to your chrome profile
+options.add_argument("user-data-dir=/home/redbend/Desktop/training/python scripts/whatsapp_poll-master/tmp") #Path to your chrome profile
 driver = webdriver.Chrome(executable_path=chrome_driver_path, chrome_options=options)
 driver.set_window_size(1024,768)
 driver.get('https://web.whatsapp.com/')
@@ -110,9 +111,9 @@ parser()
 create_csv_file(dico)
 csv_to_drive()
 
-if sys.argv[1].find("publish")>=0:
-    sendMessage(FILE_LINK)
-    time.sleep(1)
+##if sys.argv[1].find("publish")>=0:
+ ##   sendMessage(FILE_LINK)
+ ##   time.sleep(1)
 driver.quit()
 
 try:

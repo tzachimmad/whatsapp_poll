@@ -95,7 +95,6 @@ time.sleep(5)
 msgbox = driver.find_element_by_class_name("input-search")
 msgbox.click()
 stringo = "//*[@title='" + group_to_parse + "']"
-##msgbox.send_keys("19:00")
 driver.find_element_by_xpath(stringo).click()
 time.sleep(1)
 scorllUp()
@@ -114,6 +113,7 @@ csv_to_drive()
 
 if sys.argv[1].find("publish")>=0:
     sendMessage(str(comma+freinds) + " שחקנים באים כרגע ")
+    sendMessage(" פירוט בלינק " + FILE_LINK)
     time.sleep(1)
 driver.quit()
 

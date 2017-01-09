@@ -10,19 +10,22 @@ def comming (output_file, msg):
     come = 0
     friend = 0
     for input_post in msg:
-    	come = come + input_post.count("emojiordered0911")
-    	come = come + input_post.count("7708431d.png")
-    	come = come + input_post.count("3599ec59.png")
-    	come = come - input_post.count("emojiordered0917")
-    	come = come - input_post.count("f7ca681d.png")
-    	come = come - input_post.count("289f84cc.png")
+    	income = input_post.count("emojiordered0911")
+    	income = income + input_post.count("7708431d.png")
+    	income = income + input_post.count("3599ec59.png")
+    	income = income - input_post.count("emojiordered0917")
+    	income = income - input_post.count("f7ca681d.png")
+    	income = income - input_post.count("289f84cc.png")
     	friend = friend + input_post.count("emojiordered0916")
     	friend = friend + input_post.count("49c7d331.png")
     	friend = friend - input_post.count("emojiordered0922")
     	friend = friend - input_post.count("66dfb6bb.png")
-    if come>0:
-    	come = 1
-  ##      post = input_post.decode("utf-8")
+    	if income>0:
+    		come = 1
+    	elif income < 0:
+    		come = 0
+    if friend < 0:
+    	friend = 0
     return come,friend
 
 def print_to_csv(output_file,key,value):

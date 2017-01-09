@@ -17,6 +17,7 @@ sys.setdefaultencoding('utf-8')
 FILE_LINK = 'https://docs.google.com/spreadsheets/d/1GU5e-RFYRsYL1-YYL3ooMHE2VOHnz09oE8LZrmQa4I0/edit?usp=sharing'
 admin = "צחי לפידות"
 group_to_parse = "כדורסל מטומי-שלישי 19:00"
+##group_to_parse = "איפה חניתי"
 dico = {}
 
 def scorllUp():
@@ -28,7 +29,7 @@ def scorllUp():
 def sendMessage(message):
     driver.find_element_by_css_selector("#main > footer > div.block-compose > button").click()
     driver.find_element_by_css_selector("#main > footer > div.compose-box-items-positioning-container > div > div > div > span > div > div > div > span.emojik.emojiordered1754").click()
-    driver.find_element_by_class_name("input-container").send_keys(":"+message)
+    driver.find_element_by_class_name("input-container").send_keys(" : "+message.decode("utf-8"))
     driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
 
 def parser():
@@ -50,6 +51,8 @@ def parser():
         ##define if relative msg
         if (elem.find("docs.google.com")>0):
             continue
+##        print "--------------------------------------"
+ ##       print elem
         tmp_date =  elem[elem.find('['):elem.find('[')+30]
         tmp_date = tmp_date[tmp_date.find('/')+1:]
         date = tmp_date[:tmp_date.find('/')]
@@ -61,8 +64,7 @@ def parser():
         aa = written_msg.find("-->")+3
         bb= written_msg.find("<!-- /react-text -->")
         cur_msg = written_msg[aa:bb]
-        print written_msg[aa:bb]
-        print "--------------------------------------------------------------------------------"
+        final_msg = cur_msg.replace("\n",". ")
         ##set author
         if (elem.find("-->+972 54-772-0957<")>0):
             authour = admin
@@ -77,8 +79,7 @@ def parser():
 
         ##put message in dico
         arr = dico.get(authour,[])
-        final_msg = cur_msg.replace("\n",". ")
-        arr.append(final_msg)
+        arr.append(elem)
         dico[authour]=arr
 
 ###load whatsapp web
@@ -93,9 +94,9 @@ time.sleep(5)
 ###find group
 msgbox = driver.find_element_by_class_name("input-search")
 msgbox.click()
-str = "//*[@title='" + group_to_parse + "']"
+stringo = "//*[@title='" + group_to_parse + "']"
 ##msgbox.send_keys("19:00")
-driver.find_element_by_xpath(str).click()
+driver.find_element_by_xpath(stringo).click()
 time.sleep(1)
 scorllUp()
 time.sleep(3)
@@ -108,12 +109,12 @@ time.sleep(3)
 
 ##parse group and finish
 parser()
-create_csv_file(dico)
+comma,freinds = create_csv_file(dico)
 csv_to_drive()
 
-##if sys.argv[1].find("publish")>=0:
- ##   sendMessage(FILE_LINK)
- ##   time.sleep(1)
+if sys.argv[1].find("publish")>=0:
+    sendMessage(str(comma+freinds) + " שחקנים באים כרגע ")
+    time.sleep(1)
 driver.quit()
 
 try:

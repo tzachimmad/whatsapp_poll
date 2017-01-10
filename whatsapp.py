@@ -40,10 +40,11 @@ def choose_emoji(num):
 
 def sendMessage(message,num):
     driver.find_element_by_css_selector("#main > footer > div.block-compose > button").click()
+    driver.find_element_by_class_name("input-container").send_keys(FILE_LINK)
+    driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
+    driver.find_element_by_css_selector("#main > footer > div.block-compose > button").click()
     driver.find_element_by_css_selector("#main > footer > div.compose-box-items-positioning-container > div > div > div > span > div > div > div > span.emojik.emojiordered"+choose_emoji(num)).click()
     driver.find_element_by_class_name("input-container").send_keys(" : "+message.decode("utf-8"))
-    driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
-    driver.find_element_by_class_name("input-container").send_keys(FILE_LINK)
     driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
 
 def parser():

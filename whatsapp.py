@@ -26,10 +26,24 @@ def scorllUp():
     except:
         pass
 
-def sendMessage(message):
+def choose_emoji(num):
+    if num>16:
+        return "1752"
+    if num>11:
+        return "1457"
+    if num>9:
+        return "1522"
+    if num>7:
+        return "1476"
+    return "0077"
+
+
+def sendMessage(message,num):
     driver.find_element_by_css_selector("#main > footer > div.block-compose > button").click()
-    driver.find_element_by_css_selector("#main > footer > div.compose-box-items-positioning-container > div > div > div > span > div > div > div > span.emojik.emojiordered1754").click()
+    driver.find_element_by_css_selector("#main > footer > div.compose-box-items-positioning-container > div > div > div > span > div > div > div > span.emojik.emojiordered"+choose_emoji(num)).click()
     driver.find_element_by_class_name("input-container").send_keys(" : "+message.decode("utf-8"))
+    driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
+    driver.find_element_by_class_name("input-container").send_keys(FILE_LINK)
     driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
 
 def parser():
@@ -112,8 +126,7 @@ comma,freinds = create_csv_file(dico)
 csv_to_drive()
 
 if sys.argv[1].find("publish")>=0:
-    sendMessage(str(comma+freinds) + " שחקנים באים כרגע ")
-    sendMessage(" פירוט בלינק " + FILE_LINK)
+    sendMessage(str(comma+freinds) + " שחקנים באים כרגע, פירוט מלא בלינק ", comma+freinds)
     time.sleep(1)
 driver.quit()
 

@@ -39,13 +39,10 @@ def choose_emoji(num):
 
 
 def sendMessage(message,num):
-    driver.find_element_by_css_selector("#main > footer > div.block-compose > button").click()
-    driver.find_element_by_class_name("input-container").send_keys(FILE_LINK)
-    driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
-    driver.find_element_by_css_selector("#main > footer > div.block-compose > button").click()
-    driver.find_element_by_css_selector("#main > footer > div.compose-box-items-positioning-container > div > div > div > span > div > div > div > span.emojik.emojiordered"+choose_emoji(num)).click()
-    driver.find_element_by_class_name("input-container").send_keys(" : "+message.decode("utf-8"))
-    driver.find_element_by_css_selector("#main > footer > div.block-compose > button.icon.btn-icon.icon-send.send-container").click()
+    msgbox = driver.find_element_by_class_name("input-container")
+    msgbox.click()
+    msgbox.send_keys(message.decode("utf-8"))
+    driver.find_element_by_class_name("icon-send").click()
 
 def parser():
     today = time.strftime("%d")
@@ -127,6 +124,8 @@ comma,freinds = create_csv_file(dico)
 csv_to_drive()
 
 if sys.argv[1].find("publish")>=0:
+    sendMessage(FILE_LINK, -1)
+    time.sleep(1)
     sendMessage(str(comma+freinds) + " שחקנים באים כרגע, פירוט מלא בלינק ", comma+freinds)
     time.sleep(1)
 driver.quit()

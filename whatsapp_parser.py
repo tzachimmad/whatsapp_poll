@@ -13,6 +13,7 @@ def comming (output_file, msg):
     	income = input_post.count("emojiordered0911")
     	income = income + input_post.count("7708431d.png")
     	income = income + input_post.count("3599ec59.png")
+        income = income + input_post.count("dafe4edf.png")
     	income = income - input_post.count("emojiordered0917")
     	income = income - input_post.count("f7ca681d.png")
     	income = income - input_post.count("289f84cc.png")
